@@ -1,3 +1,4 @@
+// Victor Hernandez Ferzuli A01022166
 // ModelView Matrix: defines where the square is positioned in the 3D coordinate system relative to the camera
 // Projection Matrix: required by the shader to convert the 3D space into the 2D space of the viewport. 
 var projectionMatrix, modelViewMatrix;
@@ -171,26 +172,77 @@ function draw(gl, obj)
 }
 
 // TO DO: Create functions needed to generate the vertex data for the different figures.
-function createSquare(gl) 
+function createSquare(gl) // Used the same function seen in class to create a square.
 {
-    var square = {};
+    var vertexBuffer;
+    vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+    var verts = [
+        .5,  .5,  0.0,
+        -.5,  .5,  0.0,
+        .5, -.5,  0.0,
+        -.5, -.5,  0.0
+    ];
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+
+    var square = {buffer:vertexBuffer, vertSize:3, nVerts:4, primtype:gl.TRIANGLE_STRIP};
     return square;
 }
 
-function createTriangle(gl)
+function createTriangle(gl) // Used the same function seen in class to create a triangle.
 {
-    var triangle = {};
+    var vertexBuffer;
+    vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+    var verts = [
+        0.0, 0.5, 0.0,
+        .5, -.5,  0.0,
+        -.5, -.5,  0.0
+    ];
+   
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+
+    var triangle = {buffer:vertexBuffer, vertSize:3, nVerts:3, primtype:gl.TRIANGLES};
     return triangle;
 }
 
-function createRhombus(gl)
+function createRhombus(gl) // Used the same function seen in class to create a square.
 {
-    var rhombus = {};
+    var vertexBuffer;
+    vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    //  Used only 4 verts as in a square, just changed the position of each one.
+    var verts = [
+        .5,  0.0,  0.0,
+        0.0,  .5,  0.0,
+        0.0, -.5,  0.0,
+        -0.5, 0.,  0.0
+    ];
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+
+    var rhombus = {buffer:vertexBuffer, vertSize:3, nVerts:4, primtype:gl.TRIANGLE_STRIP};
     return rhombus;
 }
 
 function createSphere(gl, radius)
 {
-    var sphere = {};
+    var vertexBuffer;
+    vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    //  Given origin to the circle
+    var verts = [
+        0.0, 0.0, 0.0
+    ];
+    //  Creating triangles with rounded sides given the radious and the same origin.
+    for(var i = 40; i <= 320; i++)
+        verts.push(radius * Math.cos(i * (Math.PI / 180)), radius * Math.sin(i * (Math.PI / 180)), 0.0);
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+
+    var sphere = {buffer:vertexBuffer, vertSize:3, nVerts:verts.length / 3, primtype:gl.TRIANGLE_FAN};
     return sphere;
 }        
